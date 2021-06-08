@@ -5,19 +5,27 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Properties;
 
 public class CheckIcoUtil {
     private static final String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss";
+    private static final String PROXY = "Nastavene-url-pro-proxy";
+    private static final String PORT = "Nastaveny-port-pro-proxy";
 
     public boolean checkIcoUtil(String ico) {
         try {
             String url = "http://wwwinfo.mfcr.cz/cgi-bin/ares/xar.cgi";
             URL obj = new URL(url);
+
+
+            Properties systemProperties = System.getProperties();
+            systemProperties.setProperty("http.proxyHost",PROXY);
+            systemProperties.setProperty("http.proxyPort",PORT);
+
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
             con.setRequestMethod("POST");
             con.setRequestProperty("Content-Type","text/xml; charset=UTF-8");
             con.setRequestProperty("SOAPAction", "");
-            //String ico= ico;
 
             LocalDateTime localDateTime = LocalDateTime.now();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
